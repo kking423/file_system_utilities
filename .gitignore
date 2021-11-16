@@ -133,4 +133,4 @@ dmypy.json
 .idea
 
 # example run-time/output files
-examples/.xlsx
+examples/*.xlsx
