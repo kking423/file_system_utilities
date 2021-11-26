@@ -1,16 +1,13 @@
 __all__ = ['FileSystemObject']
 
+
 import os
-import cv2
 import mimetypes
 import pathlib
 from datetime import datetime, timezone, date
-import numpy as np
 
 
 class FileSystemObject:
-    IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')
-
     def __init__(self, path):
         self.full_path: str = path
         self.object_type: str = self.get_object_type(path)
@@ -30,7 +27,6 @@ class FileSystemObject:
         self.owner: str = self.get_owner(path)
         self.group: str = self.get_group(path)
         self.age: int = self.get_age_in_years(self.created_dt.date())
-        self.matrix_score: int = self.get_image_matrix(path, compression=50, allowed=self.IMAGE_EXTENSIONS)
 
     def to_dict(self):
         return self.__dict__
@@ -131,25 +127,3 @@ class FileSystemObject:
     def get_age_in_years(eval_date):
         days_in_year = 365.2425
         return int((date.today() - eval_date).days / days_in_year)
-
-    @staticmethod
-    def get_image_matrix(path, compression, allowed: tuple = IMAGE_EXTENSIONS):
-        try:
-            if path.lower().endswith(allowed):
-                img = cv2.imdecode(np.fromfile(path, dtype=np.uint8), cv2.IMREAD_UNCHANGED)
-                if type(img) == np.ndarray:
-                    img = img[..., 0:3]
-                    img = cv2.resize(img, dsize=(compression, compression), interpolation=cv2.INTER_CUBIC)
-                    return np.sum(img)
-                else:
-                    return 0
-            else:
-                return 0
-        except:
-            return 0
-
-    @staticmethod
-    def compare_images_from_matrix(img1, img2):
-        err = np.sum((img1.astype("float") - img2.astype("float")) ** 2)
-        err /= float(img1.shape[0] * img2.shape[1])
-        return err
