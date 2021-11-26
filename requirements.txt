@@ -11,3 +11,6 @@ XlsxWriter==3.0.2
 
 tabulate~=0.8.9
 setuptools~=57.0.0
+scikit-image
+scipy
+opencv-python

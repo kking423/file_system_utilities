@@ -19,5 +19,5 @@ search = Search(search_path='/users/kyleking/projects/file_system_utilities',
 df = pd.DataFrame(search.execute())
 df = pd.concat([df, df["results"].apply(pd.Series)], axis=1)
 df = df.drop(['results'], axis=1)
-print(tabulate(df.head(5), headers='keys', tablefmt='psql'))
+print(tabulate(df.head(500), headers='keys', tablefmt='psql'))
 
