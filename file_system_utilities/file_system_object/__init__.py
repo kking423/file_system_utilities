@@ -26,7 +26,7 @@ class FileSystemObject:
         self.opened_dt: datetime = self.get_opened_date(path)
         self.owner: str = self.get_owner(path)
         self.group: str = self.get_group(path)
-        self.age: int = self.get_age_in_years(self.created_dt.date())
+        self.age: int = self.get_age_in_years(self.modified_dt.date())
 
     def to_dict(self):
         return self.__dict__
