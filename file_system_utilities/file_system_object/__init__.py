@@ -43,7 +43,12 @@ class FileSystemObject:
 
     @staticmethod
     def get_creation_date(path):
-        return datetime.fromtimestamp(os.stat(path).st_birthtime, tz=timezone.utc)
+        modified_date = datetime.fromtimestamp(os.stat(path).st_mtime, tz=timezone.utc)
+        birth_date = datetime.fromtimestamp(os.stat(path).st_birthtime, tz=timezone.utc)
+        if birth_date > modified_date:
+            return modified_date
+        else:
+            return birth_date
 
     @staticmethod
     def get_modified_date(path):
