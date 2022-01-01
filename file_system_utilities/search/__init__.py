@@ -1,8 +1,8 @@
 __all__ = ['Search']
 
 import os
+import file_system_utilities.file_system_object as fso_meta
 from file_system_utilities.file_system_object import FileSystemObject
-from datetime import datetime, date
 
 
 class Search:
@@ -53,6 +53,7 @@ class Search:
         # iterate and evaluate each folder
 
         fso = FileSystemObject(root)
+        meta = fso_meta
 
         self._evaluate_match_criteria(root)
         fso.__setattr__("search_match", self._is_match)
@@ -60,13 +61,13 @@ class Search:
         # calculate file size of each folder
         for file in files:
             file_path = os.path.join(root, file)
-            if fso.is_file(file_path):
+            if meta.get_is_file(file_path):
 
                 fso.file_count += 1
-                fso.size += fso.get_size(file_path)
-                fso.size_kb += fso.get_size_kb(file_path)
-                fso.size_mb += fso.get_size_mb(file_path)
-                fso.size_gb += fso.get_size_gb(file_path)
+                fso.size += meta.get_size(file_path)
+                fso.size_kb += meta.get_size_kb(file_path)
+                fso.size_mb += meta.get_size_mb(file_path)
+                fso.size_gb += meta.get_size_gb(file_path)
 
         if self.return_all or self._is_match:
             self._results['results'].append(fso.to_dict())
